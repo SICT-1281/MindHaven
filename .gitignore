@@ -1,0 +1,33 @@
+# ===== Android Studio / Gradle =====
+*.iml
+.gradle
+/build
+/captures
+.externalNativeBuild
+.cxx
+/local.properties
+
+# ===== IntelliJ / Android Studio IDE settings (ignore per dev machine) =====
+.idea/
+!.idea/inspectionProfiles
+*.ipr
+*.iws
+
+# ===== macOS 系统垃圾 =====
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ===== Windows 系统垃圾 =====
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ===== Logs / Cache / Others =====
+*.log
+*.tmp
+*.bak
+*.hprof
+
+# ===== Secret files =====
+*.keystore
