@@ -15,10 +15,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button ChatButton = findViewById(R.id.ChatButton);
+        Button BackupButton = findViewById(R.id.BackupButton);
 
         ChatButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ChatActivity.class);
             startActivity(intent);
+        });
+
+        BackupButton.setOnClickListener(v -> {
+            setContentView(R.layout.chat_page);
         });
     }
 }

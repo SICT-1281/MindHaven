@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,6 +51,7 @@ public class ChatActivity extends AppCompatActivity {
         // Stack items vertically from top to bottom in standard vertical list style
         chatView.setLayoutManager(new LinearLayoutManager(this));
         chatView.setAdapter(chatAdapter);
+        userInput.clearFocus(); // clear EditText flaw
 
         // set listener and action for send button
         sendButton.setOnClickListener( v -> {
