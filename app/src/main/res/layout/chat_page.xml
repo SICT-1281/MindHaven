@@ -3,7 +3,7 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#87A96B"
+    android:background="#E8F5E9"
     android:padding="24dp">
 
     <!-- Title Text -->

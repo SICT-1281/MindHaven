@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#88a56e">
+    android:background="#E8F5E9">
 
     <EditText
         android:id="@+id/InputBox"
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:text="MindHaven\nShare Your Worries, Ease Your Mind"
         android:textSize="18sp"
-        android:textColor="#FAF3E0"
+        android:textColor="#66975d"
         android:textStyle="bold"
         android:gravity="center"
         android:fontFamily="sans-serif-medium"
@@ -91,4 +91,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.1" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#E8F5E9"
+        android:elevation="8dp"
+        app:itemIconTint="#4CAF50"
+        app:itemTextColor="#4CAF50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_navigation_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

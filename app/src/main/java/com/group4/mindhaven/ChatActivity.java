@@ -1,6 +1,8 @@
 package com.group4.mindhaven;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -22,6 +24,7 @@ import java.net.URL;
 import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import kotlin.collections.ArrayDeque;
 
@@ -39,6 +42,26 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_activity);
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                Intent intent = new Intent(ChatActivity.this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.navigation_chat) {
+                Intent intent = new Intent(ChatActivity.this, ChatActivity.class);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.navigation_profile) {
+                Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
 
         // Link views
         chatView = findViewById(R.id.ChatView);
