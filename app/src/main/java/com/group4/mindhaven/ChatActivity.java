@@ -1,13 +1,16 @@
 package com.group4.mindhaven;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,32 +22,51 @@ import com.google.gson.JsonObject;
 
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.reflect.TypeToken;
 
 import kotlin.collections.ArrayDeque;
 
 
 public class ChatActivity extends AppCompatActivity {
+
+    ChatManager manager = ChatManager.getInstance();
     private EditText userInput;
     private Button sendButton;
     private RecyclerView chatView;
 
-    // Chat state
+    private String chatID;
+
     private List<Message> messageList;
+
+    // Chat state
     private ChatAdapter chatAdapter;
+
+    private RecyclerView chatListView;  // Left side chat list
+
+    private ChatListAdapter chatListAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_activity);
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        manager.loadContacts(this);
+        manager.initializeDefaultChat();
 
+        List<ChatSession> chatSessions = manager.getAllChatSessions(); // Retrieve all chat sessions
+        chatID = chatSessions.get(0).getChatId(); // default show the first session
+        messageList = chatSessions.get(0).getMessages(); // messages of the default session
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
@@ -62,6 +84,38 @@ public class ChatActivity extends AppCompatActivity {
             }
             return false;
         });
+        chatListView = findViewById(R.id.chatListRecyclerView);
+
+        chatListAdapter = new ChatListAdapter(new ArrayList<>(manager.getAllChatSessions()),
+                new ChatListAdapter.OnChatClickListener() {
+                    @Override
+                    public void onChatClick(String chatId) {
+                        chatID = chatId;
+                        messageList = manager.getChatSession(chatId).getMessages();
+                        updateChatWindow();
+                    }
+
+                    @Override
+                    public void onChatDelete(String chatId) {
+                        manager.deleteChat(chatId, ChatActivity.this);
+                        chatListAdapter.updateChatSessions(new ArrayList<>(manager.getAllChatSessions()));
+                        chatListAdapter.notifyDataSetChanged();
+
+                        // move to default chat if current chat is removed
+                        if (chatId.equals(chatID)) {
+                            ChatSession firstSession = manager.getAllChatSessions().iterator().next();
+                            chatID = manager.getAllChatSessions().get(0).getChatId();
+                            messageList = firstSession.getMessages();
+                            updateChatWindow();
+                        }
+                    }
+                });
+
+        // Stack items horizontally from left to right
+        chatListView.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false));
+
+        chatListView.setAdapter(chatListAdapter);
 
         // Link views
         chatView = findViewById(R.id.ChatView);
@@ -69,7 +123,6 @@ public class ChatActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.SendButton);
 
         // Initialize chat history and adapter
-        messageList = new ArrayList<>();
         chatAdapter = new ChatAdapter(messageList);
         // Stack items vertically from top to bottom in standard vertical list style
         chatView.setLayoutManager(new LinearLayoutManager(this));
@@ -77,7 +130,7 @@ public class ChatActivity extends AppCompatActivity {
         userInput.clearFocus(); // clear EditText flaw
 
         // set listener and action for send button
-        sendButton.setOnClickListener( v -> {
+        sendButton.setOnClickListener(v -> {
             // Retrieve user input from the input box
             String input = userInput.getText().toString().trim();
             if (!input.isEmpty()) {
@@ -90,6 +143,37 @@ public class ChatActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Please try again later", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        Button addChatButton = findViewById(R.id.addChatButton);
+        addChatButton.setOnClickListener(v -> {
+            // 弹出输入框
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Enter Chat Name");
+
+            final EditText input = new EditText(this);
+            // Set the input type to standard input
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            input.setHint("Chat name");
+            builder.setView(input);
+
+            builder.setPositiveButton("Create", (dialog, which) -> {
+                String title = input.getText().toString().trim();
+                if (title.isEmpty()) {
+                    Toast.makeText(this, "Chat name cannot be empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ChatSession newSession = manager.createNewChat(title, this);
+                chatListAdapter.updateChatSessions(new ArrayList<>(manager.getAllChatSessions()));
+                chatListAdapter.notifyDataSetChanged();
+
+                chatID = newSession.getChatId();
+                messageList = newSession.getMessages();
+                updateChatWindow();
+            });
+            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+            builder.show();
         });
     }
     private void getAiResponse(String input) {
@@ -147,6 +231,7 @@ public class ChatActivity extends AppCompatActivity {
                     messageList.add(new Message(reply, Message.MessageType.AI));
                     chatAdapter.notifyItemInserted(messageList.size() - 1);
                     chatView.scrollToPosition(messageList.size() - 1);
+                    manager.saveContacts(this);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -155,6 +240,13 @@ public class ChatActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show());
             }
         }).start();
+    }
+
+    private void updateChatWindow() {
+        ChatSession session = manager.getChatSession(chatID);
+        messageList = session.getMessages();
+        chatAdapter.updateMessages(messageList);
+        chatAdapter.notifyDataSetChanged();
     }
 
     // Extract the AI's response from JSON format
@@ -183,7 +275,8 @@ public class ChatActivity extends AppCompatActivity {
             return "Please try again";
         } catch (Exception e) {
             // if any error occurs during parsing, print the error
-            e.printStackTrace();;
+            e.printStackTrace();
+            ;
             return "Error extracting response";
         }
     }

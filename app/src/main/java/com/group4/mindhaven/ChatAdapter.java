@@ -69,4 +69,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             messageText = itemView.findViewById(R.id.messageText);
         }
     }
+    public void updateMessages(List<Message> newMessages) {
+        this.messages = newMessages;
+    }
 }
