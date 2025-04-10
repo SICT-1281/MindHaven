@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -145,7 +146,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        Button addChatButton = findViewById(R.id.addChatButton);
+        FloatingActionButton addChatButton = findViewById(R.id.addChatButton);
         addChatButton.setOnClickListener(v -> {
             // 弹出输入框
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
