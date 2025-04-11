@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permission for API access -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,15 +15,51 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MindHaven"
         tools:targetApi="31">
+
+        <!-- Sign In Activity (Launcher) -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".SignInActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MindHaven">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Sign Up Activity -->
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false"
+            android:label="Sign Up"
+            android:theme="@style/Theme.MindHaven"/>
+
+        <!-- Main Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MindHaven"/>
+            
+        <!-- Chat Activity -->
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false"/>
+            
+        <!-- Profile Activity -->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"/>
+            
+        <!-- Book Detail Activity -->
+        <activity
+            android:name=".BookDetailActivity" />
+            
+        <!-- Saved Books Activity -->
+        <activity
+            android:name=".SavedBooksActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

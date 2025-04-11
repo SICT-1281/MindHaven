@@ -8,6 +8,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.group4.mindhaven.R;
+//import edu.northeastern.mindhaven.R;
+
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

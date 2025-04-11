@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E8F5E9">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#E8F5E9"
+        android:elevation="8dp"
+        app:itemIconTint="#4CAF50"
+        app:itemTextColor="#4CAF50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_navigation_menu" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/StartChatGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/StartChatFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:contentDescription="Start a new chat"
+        app:fabCustomSize="65dp"
+        app:srcCompat="@drawable/ic_message"
+        app:maxImageSize="32dp"
+        app:layout_constraintTop_toTopOf="@id/StartChatGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="38dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/BookListRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxHeight="300dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="@id/BookListBottomGuide"
+        app:layout_constraintStart_toStartOf="@id/BookListLeftEdge"
+        app:layout_constraintEnd_toEndOf="@id/BookListRightEdge"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/BookListBottomGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/BookListLeftEdge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/BookListRightEdge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <TextView
+        android:id="@+id/dailyQuoteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Turn left for inspiration. Turn right to share with us!"
+        android:textSize="20sp"
+        android:textColor="#7F8FA6"
+        android:layout_gravity="center_horizontal"
+        android:maxHeight="80dp"
+        android:textAlignment="center"
+        android:background="@drawable/quote_background"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:maxWidth="500dp"
+        android:fadingEdge="vertical"
+        android:scrollbars="vertical"
+        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+        android:scrollbarTrackVertical="@drawable/scrollbar_track"
+        android:fadeScrollbars="false"
+        app:layout_constraintTop_toBottomOf="@id/DailyQuoteGuide"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/DailyQuoteGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.61" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/newQuoteFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:srcCompat="@drawable/lightbulb"
+        app:maxImageSize="38dp"
+        app:tint="@android:color/white"
+        android:backgroundTint="#A29BFE"
+        app:layout_constraintTop_toTopOf="@id/newQuoteHorizontalGuide"
+        app:layout_constraintEnd_toEndOf="@id/newQuoteVerticalGuid"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/newQuoteHorizontalGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.624" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/newQuoteVerticalGuid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.13" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
