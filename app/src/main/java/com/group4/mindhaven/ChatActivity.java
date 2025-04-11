@@ -58,6 +58,16 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MindHavenPrefs", MODE_PRIVATE);
+        if (!sharedPreferences.getBoolean("isSignedIn", false)) {
+            Intent intent = new Intent(ChatActivity.this, SignInActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
+        
         setContentView(R.layout.chat_activity);
 
         manager.loadContacts(this);

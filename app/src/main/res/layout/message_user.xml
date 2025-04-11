@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:textColor="#EEE8E2"
+        android:textColor="#545151"
         android:padding="10dp"
         android:gravity="end"
         android:textAlignment="viewEnd"

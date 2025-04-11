@@ -1,5 +1,6 @@
 package com.group4.mindhaven;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
@@ -25,29 +26,47 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView BookListView;  // Left side chat list
-
     private BookListAdapter bookListAdapter;
-
     private List<Book> BookList = BookDataProvider.getBooks();
-
-    TextView dailyQuoteTextView;
-
-
-
-
+    private TextView dailyQuoteTextView;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Check if user is signed in
+        sharedPreferences = getSharedPreferences("MindHavenPrefs", MODE_PRIVATE);
+        if (!isUserSignedIn()) {
+            navigateToSignIn();
+            return;
+        }
+        
         setContentView(R.layout.activity_main);
 
+        setupBottomNavigation();
+        setupBookList();
+        setupFloatingActionButtons();
+    }
+
+    private boolean isUserSignedIn() {
+        return sharedPreferences.getBoolean("isSignedIn", false);
+    }
+
+    private void navigateToSignIn() {
+        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void setupBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
+                // Already on home page
                 return true;
             } else if (itemId == R.id.navigation_chat) {
                 Intent intent = new Intent(MainActivity.this, ChatActivity.class);
@@ -60,16 +79,10 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
 
-        FloatingActionButton startChatFAB = findViewById(R.id.StartChatFAB);
-        startChatFAB.setContentDescription("Start a new chat");
-        startChatFAB.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-            startActivity(intent);
-        });
-
+    private void setupBookList() {
         BookListView = findViewById(R.id.BookListRecyclerView);
-
 
         // Stack items horizontally from left to right
         BookListView.setLayoutManager(new LinearLayoutManager(this,
@@ -85,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 });
         BookListView.setAdapter(bookListAdapter);
+    }
+
+    private void setupFloatingActionButtons() {
+        FloatingActionButton startChatFAB = findViewById(R.id.StartChatFAB);
+        startChatFAB.setContentDescription("Start a new chat");
+        startChatFAB.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            startActivity(intent);
+        });
 
         FloatingActionButton dailyQuoteFAB = findViewById(R.id.newQuoteFAB);
         dailyQuoteFAB.setOnClickListener(v -> {

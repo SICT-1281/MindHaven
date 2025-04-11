@@ -16,26 +16,43 @@
         android:theme="@style/Theme.MindHaven"
         tools:targetApi="31">
 
-        <!-- Main Launcher Activity -->
+        <!-- Sign In Activity (Launcher) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SignInActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MindHaven">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        <!-- This is our internal chat screen -->
-        <!-- No external app should ever launch it, so exported = false -->
         </activity>
+
+        <!-- Sign Up Activity -->
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false"
+            android:label="Sign Up"
+            android:theme="@style/Theme.MindHaven"/>
+
+        <!-- Main Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MindHaven"/>
+            
+        <!-- Chat Activity -->
         <activity
             android:name=".ChatActivity"
             android:exported="false"/>
+            
+        <!-- Profile Activity -->
         <activity
             android:name=".ProfileActivity"
             android:exported="false"/>
+            
+        <!-- Book Detail Activity -->
         <activity
             android:name=".BookDetailActivity" />
     </application>
