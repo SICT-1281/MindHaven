@@ -50,7 +50,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     // Binds text into the TextView
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-        holder.messageText.setText(messages.get(position).getContent());
+        Message message = messages.get(position);
+        if (message.getType() == Message.MessageType.AI) {
+            // For AI messages, use the TypeWriter effect
+            TypeWriter typeWriter = new TypeWriter(holder.messageText);
+            typeWriter.animateText(message.getContent());
+        } else {
+            // For user messages, show text immediately
+            holder.messageText.setText(message.getContent());
+        }
     }
 
     // Tells RecyclerView how many messages there are

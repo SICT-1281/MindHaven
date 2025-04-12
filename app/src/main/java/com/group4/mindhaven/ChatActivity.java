@@ -26,6 +26,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -51,6 +54,16 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.chat_activity);
+
+        Button keywordButton1 = findViewById(R.id.KeywordButton1);
+        Button keywordButton2 = findViewById(R.id.KeywordButton2);
+        Button keywordButton3 = findViewById(R.id.KeywordButton3);
+        Button keywordButton4 = findViewById(R.id.KeywordButton4);
+
+        keywordButton1.setOnClickListener(v -> addKeywordToChat("General"));
+        keywordButton2.setOnClickListener(v -> addKeywordToChat("School"));
+        keywordButton3.setOnClickListener(v -> addKeywordToChat("Work"));
+        keywordButton4.setOnClickListener(v -> addKeywordToChat("Home"));
 
         manager.loadChats(this);
         manager.initializeDefaultChat();
@@ -157,11 +170,21 @@ public class ChatActivity extends AppCompatActivity {
                 for (Message message : history) {
                     historyBuilder.append("USER: ").append(message.getContent()).append("\n");
                 }
-
-                String prePrompt = "This conversation is with an empathetic and gentle AI designed to support mental well-being. " +
-                        "It always responds kindly, never harshly, and never escalates situations. " +
-                        "Below is the conversation history. Please respond concisely:\n\n" +
-                        historyBuilder.toString() + "\nAI:";
+                
+                ChatSession session = manager.getChatSession(chatID);
+                List<String> keywords = session.getKeywords();
+                String keywordsText = keywords.isEmpty() ? "" : "The user wants to discuss about: " + String.join(", "
+                        , keywords) + ".\n\n";
+                // Hints for the AI to act as a psychologist
+                String prePrompt =
+                        "This conversation is with an empathetic and gentle AI designed to support mental well-being. " +
+                                "The AI always responds kindly, never harshly. " +
+                                "It does not escalate situations, never recommends calling police or emergency services. " +
+                                "Its purpose is to comfort and emotionally support the user in a calm, compassionate way when needed.\n\n" +
+                                "And at the same time, it responds the user in a regular manner if user simply just want to chat\n\n" +
+                                "The topic will be about " + keywordsText +
+                                "Below is the conversation history. Please respond accurately and try to be concise:\n\n" +
+                                historyBuilder.toString() + "\nAI:";
 
                 String requestBody = "{ \"contents\": [" +
                         "{ \"role\": \"user\", \"parts\": [" +
@@ -199,28 +222,53 @@ public class ChatActivity extends AppCompatActivity {
         }).start();
     }
 
-    private String extractReply(String json) {
-        try {
-            JsonObject root = new Gson().fromJson(json, JsonObject.class);
-            JsonArray candidates = root.getAsJsonArray("candidates");
-            if (candidates != null && candidates.size() > 0) {
-                JsonObject content = candidates.get(0).getAsJsonObject().getAsJsonObject("content");
-                JsonArray parts = content.getAsJsonArray("parts");
-                if (parts != null && parts.size() > 0) {
-                    return parts.get(0).getAsJsonObject().get("text").getAsString();
-                }
-            }
-            return "Please try again";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error extracting response";
-        }
-    }
-
     private void updateChatWindow() {
         ChatSession session = manager.getChatSession(chatID);
         messageList = session.getMessages();
         chatAdapter.updateMessages(messageList);
         chatAdapter.notifyDataSetChanged();
+    }
+
+    // Extract the AI's response from JSON format
+    private String extractReply(String json) {
+        try {
+            // parse the raw JSON string into a JSON object
+            JsonObject root = new Gson().fromJson(json, JsonObject.class);
+            // Get the "candidates" array from the response
+            JsonArray candidates = root.getAsJsonArray("candidates");
+
+            // If candidates is not null and not empty
+            if (candidates != null && candidates.size() > 0) {
+                // Access the "content" object inside the first candidate
+                JsonObject content = candidates.get(0).getAsJsonObject()
+                        .getAsJsonObject("content");
+                // From "content", retrieve the "parts" array
+                JsonArray parts = content.getAsJsonArray("parts");
+
+                // If "parts" is not null and not empty
+                if (parts != null && parts.size() > 0) {
+                    // Return the actual reply text from the first "parts" object
+                    return parts.get(0).getAsJsonObject().get("text").getAsString();
+                }
+            }
+            // Ai's response is empty, show error message
+            return "Please try again";
+        } catch (Exception e) {
+            // if any error occurs during parsing, print the error
+            e.printStackTrace();
+            ;
+            return "Error extracting response";
+        }
+    }
+    private void addKeywordToChat(String keyword) {
+        ChatSession session = manager.getChatSession(chatID);
+        List<String> keywords = session.getKeywords();
+
+        if (!keywords.contains(keyword)) {
+            keywords.add(keyword);
+            session.setKeywords(keywords);
+            manager.saveChats(this);
+            Toast.makeText(this, "Got it! ", Toast.LENGTH_SHORT).show();
+        }
     }
 }

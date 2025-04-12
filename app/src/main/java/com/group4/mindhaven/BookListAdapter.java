@@ -47,7 +47,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         holder.imageView.setImageResource(getBook(position).getImageResId());
-        holder.textView.setText(getBook(position).getTitle());
+        holder.titleView.setText(getBook(position).getTitle());
         holder.itemView.setOnClickListener(v -> {
             listener.onBookClick(position);
         });
@@ -67,14 +67,13 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
 
     // ViewHolder class holds the views for each list item (improves performance)
     public static class BookViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;  // TextView to display the book title
-        ImageView imageView;  // Display book front cover as image
+        ImageView imageView;
+        TextView titleView;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Find the TextView inside the inflated layout
-            textView = itemView.findViewById(R.id.bookTitle);
-            imageView = itemView.findViewById(R.id.bookImage);
+            imageView = itemView.findViewById(R.id.bookCover);
+            titleView = itemView.findViewById(R.id.bookTitle);
         }
     }
 }

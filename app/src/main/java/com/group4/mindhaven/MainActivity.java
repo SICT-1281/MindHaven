@@ -13,7 +13,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -30,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private List<Book> BookList = BookDataProvider.getBooks();
     private TextView dailyQuoteTextView;
     private SharedPreferences sharedPreferences;
+    private TextView dailyQuoteText;
+    private FloatingActionButton newQuoteFAB;
+    private FloatingActionButton saveQuoteFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,48 +114,54 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        FloatingActionButton dailyQuoteFAB = findViewById(R.id.newQuoteFAB);
-        dailyQuoteFAB.setOnClickListener(v -> {
-            fetchDailyQuote();
+        setupDailyQuote();
+    }
+
+    private void setupDailyQuote() {
+        dailyQuoteText = findViewById(R.id.dailyQuoteText);
+        newQuoteFAB = findViewById(R.id.newQuoteFAB);
+        saveQuoteFAB = findViewById(R.id.saveQuoteFAB);
+
+        // 初始化时显示随机引用
+        showRandomQuote();
+
+        newQuoteFAB.setOnClickListener(v -> showRandomQuote());
+
+        saveQuoteFAB.setOnClickListener(v -> {
+            String currentQuote = dailyQuoteText.getText().toString();
+            if (!currentQuote.equals("Click to get inspiration!")) {
+                saveQuote(currentQuote);
+            }
         });
     }
 
-    private void fetchDailyQuote() {
-        dailyQuoteTextView = findViewById(R.id.dailyQuoteText);
-        dailyQuoteTextView.setMovementMethod(new ScrollingMovementMethod());
-        OkHttpClient client = new OkHttpClient();
+    private void showRandomQuote() {
+        String[] quotes = {
+            "The only way to do great work is to love what you do. - Steve Jobs",
+            "Believe you can and you're halfway there. - Theodore Roosevelt",
+            "It does not matter how slowly you go as long as you do not stop. - Confucius",
+            "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill",
+            "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+            "Happiness is not something ready made. It comes from your own actions. - Dalai Lama",
+            "The only limit to our realization of tomorrow is our doubts of today. - Franklin D. Roosevelt",
+            "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+            "The best way to predict the future is to create it. - Peter Drucker",
+            "Life is 10% what happens to us and 90% how we react to it. - Charles R. Swindoll"
+        };
 
-        Request request = new Request.Builder()
-                .url("https://zenquotes.io/api/random")
-                .build();
+        Random random = new Random();
+        int index = random.nextInt(quotes.length);
+        dailyQuoteText.setText(quotes[index]);
+    }
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> dailyQuoteTextView.setText("Failed to load quote."));
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful() && response.body() != null) {
-                    String responseData = response.body().string();
-                    try {
-                        JSONArray jsonArray = new JSONArray(responseData);
-                        JSONObject quoteObject = jsonArray.getJSONObject(0);
-                        String quote = quoteObject.getString("q");
-                        String author = quoteObject.getString("a");
-                        String fullQuote = quote + "\n\n— " + author;
-
-                        runOnUiThread(() -> dailyQuoteTextView.setText(fullQuote));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        runOnUiThread(() -> dailyQuoteTextView.setText("Error parsing quote."));
-                    }
-                } else {
-                    runOnUiThread(() -> dailyQuoteTextView.setText("Failed to load quote."));
-                }
-            }
-        });
+    private void saveQuote(String quote) {
+        SharedPreferences prefs = getSharedPreferences("saved_quotes", MODE_PRIVATE);
+        Set<String> savedQuotes = new HashSet<>(prefs.getStringSet("quotes", new HashSet<>()));
+        if (savedQuotes.add(quote)) {
+            prefs.edit().putStringSet("quotes", savedQuotes).apply();
+            Toast.makeText(this, "Quote saved!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Quote already saved", Toast.LENGTH_SHORT).show();
+        }
     }
 }
