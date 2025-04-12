@@ -27,7 +27,6 @@ import java.util.List;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-
 public class ChatActivity extends AppCompatActivity {
 
     ChatManager manager = ChatManager.getInstance();
