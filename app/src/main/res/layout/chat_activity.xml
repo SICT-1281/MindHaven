@@ -17,13 +17,12 @@
         android:inputType="textMultiLine"
         android:gravity="top|start"
         android:padding="20dp"
-        android:background="#66975d"
+        android:background="@drawable/rounded_input_box"
         android:textColor="#ffffff"
         android:textColorHint="#ccffffff"
-
-
+        android:layout_marginEnd="8dp"
         app:layout_constraintStart_toStartOf="@id/LeftEdgeGuide"
-        app:layout_constraintEnd_toEndOf="@id/RightEdgeGuide"
+        app:layout_constraintEnd_toStartOf="@id/SendButton"
         app:layout_constraintBottom_toTopOf="@id/InputGuide"/>
 
     <androidx.constraintlayout.widget.Guideline
@@ -50,11 +49,13 @@
     <Button
         android:id="@+id/SendButton"
         android:layout_width="60dp"
-        app:layout_constraintTop_toTopOf="@id/InputBox"
         android:layout_height="0dp"
         android:textSize="24dp"
-        android:background="@drawable/ripple_button"
+        android:background="@drawable/rounded_send_button"
         android:text="💬"
+        android:textColor="#ffffff"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toTopOf="@id/InputBox"
         app:layout_constraintStart_toEndOf="@id/RightEdgeGuide"
         app:layout_constraintBottom_toBottomOf="@id/InputBox"/>
 

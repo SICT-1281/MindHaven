@@ -49,4 +49,14 @@
         android:textColor="@android:color/white"
         android:layout_gravity="center" />
 
+    <Button
+        android:id="@+id/saveBookButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Book"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#2196F3"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center" />
+
 </LinearLayout>
