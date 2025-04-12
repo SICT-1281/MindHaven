@@ -1,110 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E8F5E9">
 
-    <TextView
-        android:id="@+id/profileTitle"
-        android:layout_width="wrap_content"
+    <!-- Profile Header -->
+    <LinearLayout
+        android:id="@+id/profileHeader"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profile"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="#4CAF50"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:orientation="vertical"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:paddingTop="58dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/nameLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/profileTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/emailLayout"
-        android:layout_marginTop="24dp">
+        <TextView
+            android:id="@+id/userNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:textColor="#2C3E50"
+            android:textSize="24sp"
+            android:fontFamily="@font/lexend_medium"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nameInput"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Full Name"
-            android:inputType="textPersonName"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="2dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailLayout"
-        android:layout_width="0dp"
+            <TextView
+                android:id="@+id/userEmailText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="user@email.com"
+                android:textColor="#66975d"
+                android:textSize="14sp"
+                android:fontFamily="@font/lexend_regular"
+                android:alpha="0.8"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/editButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:padding="8dp"
+                app:icon="@drawable/ic_edit"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#66975d"
+                android:backgroundTint="#E8F5E9"
+                app:rippleColor="#66975d"
+                android:stateListAnimator="@null"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Stats Section -->
+    <LinearLayout
+        android:id="@+id/statsSection"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/profileTitle"
-        app:layout_constraintStart_toEndOf="@id/nameLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp">
+        android:orientation="horizontal"
+        android:padding="24dp"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
+        app:layout_constraintTop_toBottomOf="@id/profileHeader"
+        android:layout_marginTop="8dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailInput"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/chatCountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#66975d"
+                android:textSize="20sp"
+                android:fontFamily="@font/lexend_medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chats"
+                android:textColor="#2C3E50"
+                android:textSize="14sp"
+                android:fontFamily="@font/lexend_regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/quotesCountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#66975d"
+                android:textSize="20sp"
+                android:fontFamily="@font/lexend_medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quotes"
+                android:textColor="#2C3E50"
+                android:textSize="14sp"
+                android:fontFamily="@font/lexend_regular"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintTop_toBottomOf="@id/statsSection"
+        android:layout_marginTop="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/savedItemsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="Saved Items"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#66975d"
+            android:padding="16dp"
+            app:cornerRadius="12dp"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phoneLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/nameLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/bioLayout"
-        android:layout_marginTop="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phoneInput"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/signOutButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone Number"
-            android:inputType="phone"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/bioLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/emailLayout"
-        app:layout_constraintStart_toEndOf="@id/phoneLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/bioInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Bio"
-            android:inputType="textMultiLine"
-            android:minLines="3" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/saveButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="76dp"
-        android:backgroundTint="#4CAF50"
-        android:padding="12dp"
-        android:text="Save Changes"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/phoneLayout" />
+            android:text="Sign Out"
+            android:textColor="#66975d"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            app:strokeColor="#66975d"
+            app:cornerRadius="12dp"/>
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -116,49 +169,5 @@
         app:itemTextColor="#4CAF50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/savedItemsButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Saved Items"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#2196F3"
-        app:layout_constraintTop_toBottomOf="@id/SavedHorizontalGuide"
-        app:layout_constraintStart_toEndOf="@id/SignOutVerticalGuide"
-        />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signOutButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Sign Out"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#838383"
-        app:layout_constraintStart_toEndOf="@id/SavedVerticalGuide"
-        app:layout_constraintTop_toBottomOf="@id/SavedHorizontalGuide"
-
-    />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/SavedVerticalGuide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/SignOutVerticalGuide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/SavedHorizontalGuide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

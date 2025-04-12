@@ -50,7 +50,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintTop_toBottomOf="@id/chatHistoryButton"
-        app:layout_constraintBottom_toTopOf="@id/InputBox"
+        app:layout_constraintBottom_toTopOf="@id/KeywordButton1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -99,10 +99,8 @@
         android:layout_marginStart="88dp"
         android:contentDescription="Add Chat"
         app:backgroundTint="#4CAF50"
-        app:layout_constraintEnd_toStartOf="@+id/TitleText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/AddChatVerticalGuide"
+        app:layout_constraintTop_toTopOf="@id/AddChatHorizontalGuide"
         app:srcCompat="@drawable/ic_add"
         />
 
@@ -116,13 +114,6 @@
         app:itemTextColor="#4CAF50"
         app:menu="@menu/bottom_navigation_menu"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/AddChatVerticalGuide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
 
     <Button
         android:id="@+id/KeywordButton1"
@@ -181,6 +172,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/AddChatVerticalGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/AddChatHorizontalGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.01" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

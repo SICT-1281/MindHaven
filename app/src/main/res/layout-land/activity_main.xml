@@ -121,16 +121,13 @@
         android:id="@+id/saveQuoteFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:fabSize="mini"
         app:srcCompat="@drawable/ic_save"
         app:maxImageSize="24dp"
         app:tint="@android:color/white"
         android:backgroundTint="#66975d"
-        app:layout_constraintTop_toBottomOf="@id/dailyQuoteText"
-        app:layout_constraintStart_toEndOf="@id/newQuoteFAB"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="@id/SaveQuoteHorizontalGuide"
+        app:layout_constraintStart_toStartOf="@id/SaveQuoteVerticalGuide"
         />
 
     <androidx.constraintlayout.widget.Guideline
@@ -146,5 +143,42 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.13" />
+
+    <TextView
+        android:id="@+id/quoteLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text=""
+        android:textColor="#4CAF50"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BookListRecyclerView" />
+
+    <TextView
+        android:id="@+id/quoteAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="#4CAF50"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dailyQuoteText" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/SaveQuoteHorizontalGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/SaveQuoteVerticalGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
