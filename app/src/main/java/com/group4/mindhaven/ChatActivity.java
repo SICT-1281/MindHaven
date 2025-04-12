@@ -4,15 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,16 +20,12 @@ import com.google.gson.JsonObject;
 
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.reflect.TypeToken;
 
-import kotlin.collections.ArrayDeque;
 
 
 public class ChatActivity extends AppCompatActivity {
@@ -67,15 +60,16 @@ public class ChatActivity extends AppCompatActivity {
             finish();
             return;
         }
+
         
         setContentView(R.layout.chat_activity);
 
-        manager.loadContacts(this);
+        manager.loadChats(this);
         manager.initializeDefaultChat();
 
         List<ChatSession> chatSessions = manager.getAllChatSessions(); // Retrieve all chat sessions
-        chatID = chatSessions.get(0).getChatId(); // default show the first session
-        messageList = chatSessions.get(0).getMessages(); // messages of the default session
+        chatID = chatSessions.get(0).getChatId();                      // default show the first session
+        messageList = chatSessions.get(0).getMessages();               // messages of the default session
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(item -> {
@@ -187,6 +181,7 @@ public class ChatActivity extends AppCompatActivity {
             builder.show();
         });
     }
+
     private void getAiResponse(String input) {
         new Thread(() -> {
             try {
@@ -194,13 +189,26 @@ public class ChatActivity extends AppCompatActivity {
                 URL url = new URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="
                         + apiKey);
 
+                ChatManager.getInstance().addMessageToChatHistory(chatID, new Message(input, Message.MessageType.USER));
+
+                List<Message> history = ChatManager.getInstance().getChatHistory(chatID);
+                StringBuilder historyBuilder = new StringBuilder();
+                for (Message message : history) {
+                    Message.MessageType sender = Message.MessageType.USER;
+                    String text = message.getContent();
+                    historyBuilder.append(sender).append(": ").append(text).append("\n");
+                }
+
                 // Hints for the AI to act as a psychologist
                 String prePrompt =
                         "This conversation is with an empathetic and gentle AI designed to support mental well-being. " +
                                 "The AI always responds kindly, never harshly. " +
                                 "It does not escalate situations, never recommends calling police or emergency services. " +
-                                "Its sole purpose is to comfort and emotionally support the user in a calm, compassionate way.\n\n" +
-                                "Below is the user's message. Please respond with kindness and emotional support only:\n\n";
+                                "Its purpose is to comfort and emotionally support the user in a calm, compassionate way when needed.\n\n" +
+                                "And at the same time, it responds the user in a regular manner if user simply just want to chat\n\n" +
+                                "Below is the conversation history. Please respond accurately and try to be concise:\n\n" +
+                                historyBuilder.toString() + "\nAI:";
+
 
                 // Request body that includes the hint and user input
                 String requestBody = "{ \"contents\": [" +
@@ -238,11 +246,13 @@ public class ChatActivity extends AppCompatActivity {
                 // Use custom extractor to get AI reply
                 String reply = extractReply(responseText);
 
+                ChatManager.getInstance().addMessageToChatHistory(chatID, new Message(reply, Message.MessageType.AI));
+
                 runOnUiThread(() -> {
                     messageList.add(new Message(reply, Message.MessageType.AI));
                     chatAdapter.notifyItemInserted(messageList.size() - 1);
                     chatView.scrollToPosition(messageList.size() - 1);
-                    manager.saveContacts(this);
+                    manager.saveChats(this);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
