@@ -55,6 +55,12 @@
         <!-- Book Detail Activity -->
         <activity
             android:name=".BookDetailActivity" />
+
+        <activity
+            android:name=".ChatHistoryActivity"
+            android:theme="@style/Theme.MindHaven" />
+
+
     </application>
 
 </manifest>
