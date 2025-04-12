@@ -60,9 +60,17 @@ public class ChatActivity extends AppCompatActivity {
             finish();
             return;
         }
-
-        
         setContentView(R.layout.chat_activity);
+
+        Button keywordButton1 = findViewById(R.id.KeywordButton1);
+        Button keywordButton2 = findViewById(R.id.KeywordButton2);
+        Button keywordButton3 = findViewById(R.id.KeywordButton3);
+        Button keywordButton4 = findViewById(R.id.KeywordButton4);
+
+        keywordButton1.setOnClickListener(v -> addKeywordToChat("General"));
+        keywordButton2.setOnClickListener(v -> addKeywordToChat("School"));
+        keywordButton3.setOnClickListener(v -> addKeywordToChat("Work"));
+        keywordButton4.setOnClickListener(v -> addKeywordToChat("Home"));
 
         manager.loadChats(this);
         manager.initializeDefaultChat();
@@ -199,6 +207,10 @@ public class ChatActivity extends AppCompatActivity {
                     historyBuilder.append(sender).append(": ").append(text).append("\n");
                 }
 
+                ChatSession session = manager.getChatSession(chatID);
+                List<String> keywords = session.getKeywords();
+                String keywordsText = keywords.isEmpty() ? "" : "The user wants to discuss about: " + String.join(", "
+                        , keywords) + ".\n\n";
                 // Hints for the AI to act as a psychologist
                 String prePrompt =
                         "This conversation is with an empathetic and gentle AI designed to support mental well-being. " +
@@ -206,6 +218,7 @@ public class ChatActivity extends AppCompatActivity {
                                 "It does not escalate situations, never recommends calling police or emergency services. " +
                                 "Its purpose is to comfort and emotionally support the user in a calm, compassionate way when needed.\n\n" +
                                 "And at the same time, it responds the user in a regular manner if user simply just want to chat\n\n" +
+                                "The topic will be about " + keywordsText +
                                 "Below is the conversation history. Please respond accurately and try to be concise:\n\n" +
                                 historyBuilder.toString() + "\nAI:";
 
@@ -299,6 +312,17 @@ public class ChatActivity extends AppCompatActivity {
             e.printStackTrace();
             ;
             return "Error extracting response";
+        }
+    }
+    private void addKeywordToChat(String keyword) {
+        ChatSession session = manager.getChatSession(chatID);
+        List<String> keywords = session.getKeywords();
+
+        if (!keywords.contains(keyword)) {
+            keywords.add(keyword);
+            session.setKeywords(keywords);
+            manager.saveChats(this);
+            Toast.makeText(this, "Got it! ", Toast.LENGTH_SHORT).show();
         }
     }
 }

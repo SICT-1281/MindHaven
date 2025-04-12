@@ -134,4 +134,45 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.25" />
+
+    <Button
+        android:id="@+id/KeywordButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="General"
+        app:layout_constraintBottom_toTopOf="@id/InputBox"
+        app:layout_constraintStart_toStartOf="@id/LeftEdgeGuide"
+        />
+
+    <Button
+        android:id="@+id/KeywordButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="School"
+        app:layout_constraintBottom_toTopOf="@id/InputBox"
+        app:layout_constraintStart_toEndOf="@id/KeywordButton1"
+        />
+
+    <Button
+        android:id="@+id/KeywordButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="Work"
+        app:layout_constraintBottom_toTopOf="@id/InputBox"
+        app:layout_constraintStart_toEndOf="@id/KeywordButton2"
+        />
+
+    <Button
+        android:id="@+id/KeywordButton4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="Home"
+        app:layout_constraintBottom_toTopOf="@id/InputBox"
+        app:layout_constraintStart_toEndOf="@id/KeywordButton3"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
