@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:hint="Bio"
             android:inputType="textMultiLine"
-            android:minLines="3"/>
+            android:minLines="3" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -116,5 +116,49 @@
         app:itemTextColor="#4CAF50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/savedItemsButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Saved Items"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#2196F3"
+        app:layout_constraintTop_toBottomOf="@id/SavedHorizontalGuide"
+        app:layout_constraintStart_toEndOf="@id/SignOutVerticalGuide"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signOutButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Sign Out"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#838383"
+        app:layout_constraintStart_toEndOf="@id/SavedVerticalGuide"
+        app:layout_constraintTop_toBottomOf="@id/SavedHorizontalGuide"
+
+    />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/SavedVerticalGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/SignOutVerticalGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/SavedHorizontalGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

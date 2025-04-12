@@ -39,6 +39,8 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.1" />
 
+
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/RightEdgeGuide"
         android:layout_width="wrap_content"
@@ -64,7 +66,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/InputBox"
+        app:layout_constraintBottom_toTopOf="@+id/KeywordButton1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TitleText"/>
@@ -142,8 +144,11 @@
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:text="General"
+        android:background="@drawable/rounded_button_general"
+        android:textColor="#4CAF50"
         app:layout_constraintBottom_toTopOf="@id/InputBox"
-        app:layout_constraintStart_toStartOf="@id/LeftEdgeGuide"
+        app:layout_constraintStart_toStartOf="@id/KeywordsLeftGuide"
+        android:layout_marginRight="10dp"
         />
 
     <Button
@@ -152,8 +157,11 @@
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:text="School"
+        android:background="@drawable/rounded_button_school"
+        android:textColor="#4CAF50"
         app:layout_constraintBottom_toTopOf="@id/InputBox"
         app:layout_constraintStart_toEndOf="@id/KeywordButton1"
+        android:layout_marginLeft="10dp"
         />
 
     <Button
@@ -162,8 +170,11 @@
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:text="Work"
+        android:background="@drawable/rounded_button_work"
+        android:textColor="#4CAF50"
         app:layout_constraintBottom_toTopOf="@id/InputBox"
         app:layout_constraintStart_toEndOf="@id/KeywordButton2"
+        android:layout_marginLeft="10dp"
         />
 
     <Button
@@ -172,8 +183,19 @@
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:text="Home"
+        android:background="@drawable/rounded_button_home"
+        android:textColor="#4CAF50"
         app:layout_constraintBottom_toTopOf="@id/InputBox"
         app:layout_constraintStart_toEndOf="@id/KeywordButton3"
+        android:layout_marginLeft="10dp"
         />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/KeywordsLeftGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.06" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

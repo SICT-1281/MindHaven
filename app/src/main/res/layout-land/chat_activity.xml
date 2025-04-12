@@ -143,5 +143,63 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.1" />
 
+    <Button
+        android:id="@+id/KeywordButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="General"
+        android:background="@drawable/rounded_button_general"
+        android:textColor="#4CAF50"
+        app:layout_constraintBottom_toTopOf="@id/InputBox"
+        app:layout_constraintStart_toStartOf="@id/KeywordsLeftGuide"
+        />
+
+    <Button
+        android:id="@+id/KeywordButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="School"
+        android:background="@drawable/rounded_button_school"
+        android:textColor="#4CAF50"
+        app:layout_constraintBottom_toTopOf="@id/InputBox"
+        app:layout_constraintStart_toEndOf="@id/KeywordButton1"
+        android:layout_marginLeft="110dp"
+        />
+
+    <Button
+        android:id="@+id/KeywordButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="Work"
+        android:background="@drawable/rounded_button_work"
+        android:textColor="#4CAF50"
+        app:layout_constraintBottom_toTopOf="@id/InputBox"
+        app:layout_constraintStart_toEndOf="@id/KeywordButton2"
+        android:layout_marginLeft="110dp"
+        />
+
+    <Button
+        android:id="@+id/KeywordButton4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="Home"
+        android:background="@drawable/rounded_button_home"
+        android:textColor="#4CAF50"
+        app:layout_constraintBottom_toTopOf="@id/InputBox"
+        app:layout_constraintStart_toEndOf="@id/KeywordButton3"
+        android:layout_marginLeft="110dp"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/KeywordsLeftGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
