@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="12dp"
+    android:gravity="center_vertical">
 
-    <!-- Title -->
+    <!-- Chat Title -->
     <TextView
         android:id="@+id/chatTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="Chat Title"
         android:textSize="16sp"
-        android:paddingEnd="8dp" />
+        android:textColor="#000000"
+        android:maxLines="1"
+        android:ellipsize="end" />
 
     <!-- Delete Button -->
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete" />
+        android:text="Delete"
+        android:textColor="#000000"
+        android:background="#E8F5E9"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp" />
 </LinearLayout>
