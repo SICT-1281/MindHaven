@@ -60,6 +60,12 @@
         <activity
             android:name=".SavedBooksActivity"
             android:exported="false" />
+
+        <!-- Saved Activity -->
+        <activity
+            android:name=".SavedActivity"
+            android:exported="false"
+            android:label="Saved Items"/>
     </application>
 
 </manifest>

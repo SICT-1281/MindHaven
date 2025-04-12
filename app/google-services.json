@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "795880409853",
+    "project_id": "mindhaven-60165",
+    "storage_bucket": "mindhaven-60165.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:795880409853:android:3898f0dfd8bb7af30b4c94",
+        "android_client_info": {
+          "package_name": "com.group4.mindhaven"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV4rmE8LHAMLBcF0q4zcGzgBhnUlf6Z08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

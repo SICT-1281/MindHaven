@@ -25,7 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Your safe space for mental wellness and emotional support"
-        android:textSize="19sp"
+        android:textSize="16sp"
         android:textColor="#D8C3A5"
         android:textStyle="bold"
         android:gravity="center"
@@ -33,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@id/welcomeText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="16dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -121,26 +121,50 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Click to get inspiration!"
-        android:textSize="30sp"
-        android:textColor="#7F8FA6"
+        android:textSize="20sp"
+        android:textColor="#66975d"
         android:padding="16dp"
         android:layout_gravity="center_horizontal"
-        android:maxHeight="200dp"
         android:textAlignment="center"
-        android:background="@drawable/quote_background"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:maxWidth="300dp"
-        android:fadingEdge="vertical"
-        android:scrollbars="vertical"
-        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
-        android:scrollbarTrackVertical="@drawable/scrollbar_track"
-        android:fadeScrollbars="false"
         app:layout_constraintTop_toBottomOf="@id/DailyQuoteGuide"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
     />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/newQuoteFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/lightbulb"
+        app:maxImageSize="24dp"
+        app:tint="@android:color/white"
+        android:backgroundTint="#66975d"
+        app:layout_constraintTop_toBottomOf="@id/dailyQuoteText"
+        app:layout_constraintEnd_toStartOf="@id/saveQuoteFAB"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="8dp"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/saveQuoteFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_save"
+        app:maxImageSize="24dp"
+        app:tint="@android:color/white"
+        android:backgroundTint="#66975d"
+        app:layout_constraintTop_toBottomOf="@id/dailyQuoteText"
+        app:layout_constraintStart_toEndOf="@id/newQuoteFAB"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/RecommendationTitleGuide"
@@ -154,41 +178,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.21" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/newQuoteFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/lightbulb"
-        app:maxImageSize="38dp"
-        app:tint="@android:color/white"
-        android:backgroundTint="#A29BFE"
-        app:layout_constraintTop_toTopOf="@id/newQuoteHorizontalGuide"
-        app:layout_constraintEnd_toEndOf="@id/newQuoteVerticalGuid"
-        />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/newQuoteHorizontalGuide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.23" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/newQuoteVerticalGuid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.97" />
+        app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/welcomeTextGuide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.03" />
 
     <TextView
         android:id="@+id/chatPromptText"
@@ -215,6 +212,5 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.76" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

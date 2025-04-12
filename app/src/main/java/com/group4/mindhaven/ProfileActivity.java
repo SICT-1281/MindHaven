@@ -5,30 +5,36 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class ProfileActivity extends AppCompatActivity {
-    
     private TextInputEditText nameInput;
     private TextInputEditText emailInput;
     private TextInputEditText phoneInput;
     private TextInputEditText bioInput;
     private MaterialButton saveButton;
     private MaterialButton signOutButton;
-    private MaterialButton savedBooksButton;
+    private MaterialButton savedItemsButton;
     private SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_activity);
-
-        // Initialize SharedPreferences
+        
+        // Check if user is signed in
         sharedPreferences = getSharedPreferences("MindHavenPrefs", MODE_PRIVATE);
+        if (!sharedPreferences.getBoolean("isSignedIn", false)) {
+            Intent intent = new Intent(ProfileActivity.this, SignInActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
+        
+        setContentView(R.layout.profile_activity);
 
         // Initialize views
         nameInput = findViewById(R.id.nameInput);
@@ -37,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         bioInput = findViewById(R.id.bioInput);
         saveButton = findViewById(R.id.saveButton);
         signOutButton = findViewById(R.id.signOutButton);
-        savedBooksButton = findViewById(R.id.savedBooksButton);
+        savedItemsButton = findViewById(R.id.savedItemsButton);
 
         // Load user data
         loadUserData();
@@ -45,8 +51,8 @@ public class ProfileActivity extends AppCompatActivity {
         // Set click listeners
         saveButton.setOnClickListener(v -> saveUserData());
         signOutButton.setOnClickListener(v -> signOut());
-        savedBooksButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, SavedBooksActivity.class);
+        savedItemsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, SavedActivity.class);
             startActivity(intent);
         });
 
@@ -55,13 +61,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserData() {
-        // Get user data from SharedPreferences with default values
         String name = sharedPreferences.getString("userName", "User");
         String email = sharedPreferences.getString("userEmail", "");
         String phone = sharedPreferences.getString("userPhone", "0");
         String bio = sharedPreferences.getString("userBio", "Hi");
 
-        // Set the values to the input fields
         nameInput.setText(name);
         emailInput.setText(email);
         phoneInput.setText(phone);
@@ -69,13 +73,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void saveUserData() {
-        // Get values from input fields
         String name = nameInput.getText().toString().trim();
         String email = emailInput.getText().toString().trim();
         String phone = phoneInput.getText().toString().trim();
         String bio = bioInput.getText().toString().trim();
 
-        // Validate input
         if (name.isEmpty()) {
             nameInput.setError("Name is required");
             return;
@@ -91,7 +93,6 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
 
-        // Save to SharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("userName", name);
         editor.putString("userEmail", email);
@@ -104,7 +105,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void setupBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
@@ -123,7 +123,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    // Method to sign out
     private void signOut() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("isSignedIn", false);

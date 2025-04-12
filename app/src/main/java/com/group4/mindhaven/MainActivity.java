@@ -13,7 +13,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -108,9 +110,26 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        FloatingActionButton dailyQuoteFAB = findViewById(R.id.newQuoteFAB);
-        dailyQuoteFAB.setOnClickListener(v -> {
+        FloatingActionButton newQuoteFAB = findViewById(R.id.newQuoteFAB);
+        FloatingActionButton saveQuoteFAB = findViewById(R.id.saveQuoteFAB);
+        TextView quoteText = findViewById(R.id.dailyQuoteText);
+
+        newQuoteFAB.setOnClickListener(v -> {
             fetchDailyQuote();
+        });
+
+        saveQuoteFAB.setOnClickListener(v -> {
+            String currentQuote = quoteText.getText().toString();
+            if (!currentQuote.equals("Click to get inspiration!")) {
+                SharedPreferences prefs = getSharedPreferences("saved_quotes", MODE_PRIVATE);
+                Set<String> savedQuotes = new HashSet<>(prefs.getStringSet("quotes", new HashSet<>()));
+                if (savedQuotes.add(currentQuote)) {
+                    prefs.edit().putStringSet("quotes", savedQuotes).apply();
+                    Toast.makeText(this, "Quote saved!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Quote already saved", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 

@@ -107,12 +107,12 @@
         android:layout_marginTop="24dp"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/signOutButton"
+        android:id="@+id/savedItemsButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Sign Out"
+        android:text="Saved Items"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#838383"
+        android:backgroundTint="#2196F3"
         android:layout_marginHorizontal="32dp"
         android:padding="12dp"
         app:layout_constraintTop_toBottomOf="@id/saveButton"
@@ -121,15 +121,15 @@
         android:layout_marginTop="16dp"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/savedBooksButton"
+        android:id="@+id/signOutButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Saved Books"
+        android:text="Sign Out"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#2196F3"
+        android:backgroundTint="#838383"
         android:layout_marginHorizontal="32dp"
         android:padding="12dp"
-        app:layout_constraintTop_toBottomOf="@id/signOutButton"
+        app:layout_constraintTop_toBottomOf="@id/savedItemsButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
