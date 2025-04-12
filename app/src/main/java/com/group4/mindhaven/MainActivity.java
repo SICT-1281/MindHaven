@@ -3,6 +3,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView dailyQuoteTextView;
     private SharedPreferences sharedPreferences;
     private TextView dailyQuoteText;
+    private TextView quoteAuthor;
     private FloatingActionButton newQuoteFAB;
     private FloatingActionButton saveQuoteFAB;
 
@@ -109,9 +112,53 @@ public class MainActivity extends AppCompatActivity {
     private void setupFloatingActionButtons() {
         FloatingActionButton startChatFAB = findViewById(R.id.StartChatFAB);
         startChatFAB.setContentDescription("Start a new chat");
-        startChatFAB.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-            startActivity(intent);
+
+        // Variables to track movement
+        final float[] dX = new float[1];
+        final float[] dY = new float[1];
+        final int[] lastAction = new int[1];
+
+        startChatFAB.setOnTouchListener((view, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    dX[0] = view.getX() - event.getRawX();
+                    dY[0] = view.getY() - event.getRawY();
+                    lastAction[0] = MotionEvent.ACTION_DOWN;
+                    return true;
+
+                case MotionEvent.ACTION_MOVE:
+                    float newX = event.getRawX() + dX[0];
+                    float newY = event.getRawY() + dY[0];
+                    
+                    // Add bounds checking
+                    int screenWidth = getResources().getDisplayMetrics().widthPixels;
+                    int screenHeight = getResources().getDisplayMetrics().heightPixels;
+                    int buttonWidth = view.getWidth();
+                    int buttonHeight = view.getHeight();
+                    
+                    // Keep button within screen bounds
+                    newX = Math.max(0, Math.min(screenWidth - buttonWidth, newX));
+                    newY = Math.max(0, Math.min(screenHeight - buttonHeight, newY));
+                    
+                    view.animate()
+                        .x(newX)
+                        .y(newY)
+                        .setDuration(0)
+                        .start();
+                    lastAction[0] = MotionEvent.ACTION_MOVE;
+                    return true;
+
+                case MotionEvent.ACTION_UP:
+                    if (lastAction[0] == MotionEvent.ACTION_DOWN) {
+                        // This was a click (no movement), launch chat activity
+                        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                        startActivity(intent);
+                    }
+                    return true;
+
+                default:
+                    return false;
+            }
         });
 
         setupDailyQuote();
@@ -119,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupDailyQuote() {
         dailyQuoteText = findViewById(R.id.dailyQuoteText);
+        quoteAuthor = findViewById(R.id.quoteAuthor);
         newQuoteFAB = findViewById(R.id.newQuoteFAB);
         saveQuoteFAB = findViewById(R.id.saveQuoteFAB);
 
@@ -129,29 +177,42 @@ public class MainActivity extends AppCompatActivity {
 
         saveQuoteFAB.setOnClickListener(v -> {
             String currentQuote = dailyQuoteText.getText().toString();
+            String author = quoteAuthor.getText().toString();
             if (!currentQuote.equals("Click to get inspiration!")) {
-                saveQuote(currentQuote);
+                saveQuote(currentQuote + " - " + author);
             }
         });
     }
 
     private void showRandomQuote() {
-        String[] quotes = {
-            "The only way to do great work is to love what you do. - Steve Jobs",
-            "Believe you can and you're halfway there. - Theodore Roosevelt",
-            "It does not matter how slowly you go as long as you do not stop. - Confucius",
-            "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill",
-            "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
-            "Happiness is not something ready made. It comes from your own actions. - Dalai Lama",
-            "The only limit to our realization of tomorrow is our doubts of today. - Franklin D. Roosevelt",
-            "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
-            "The best way to predict the future is to create it. - Peter Drucker",
-            "Life is 10% what happens to us and 90% how we react to it. - Charles R. Swindoll"
+        Quote[] quotes = {
+            new Quote("The only way to do great work is to love what you do.", "Steve Jobs"),
+            new Quote("Believe you can and you're halfway there.", "Theodore Roosevelt"),
+            new Quote("It does not matter how slowly you go as long as you do not stop.", "Confucius"),
+            new Quote("Success is not final, failure is not fatal: it is the courage to continue that counts.", "Winston Churchill"),
+            new Quote("The future belongs to those who believe in the beauty of their dreams.", "Eleanor Roosevelt"),
+            new Quote("Happiness is not something ready made. It comes from your own actions.", "Dalai Lama"),
+            new Quote("The only limit to our realization of tomorrow is our doubts of today.", "Franklin D. Roosevelt"),
+            new Quote("You are never too old to set another goal or to dream a new dream.", "C.S. Lewis"),
+            new Quote("The best way to predict the future is to create it.", "Peter Drucker"),
+            new Quote("Life is 10% what happens to us and 90% how we react to it.", "Charles R. Swindoll")
         };
 
         Random random = new Random();
-        int index = random.nextInt(quotes.length);
-        dailyQuoteText.setText(quotes[index]);
+        Quote selectedQuote = quotes[random.nextInt(quotes.length)];
+        
+        dailyQuoteText.setText(selectedQuote.text);
+        quoteAuthor.setText(selectedQuote.author);
+    }
+
+    private static class Quote {
+        String text;
+        String author;
+
+        Quote(String text, String author) {
+            this.text = text;
+            this.author = author;
+        }
     }
 
     private void saveQuote(String quote) {

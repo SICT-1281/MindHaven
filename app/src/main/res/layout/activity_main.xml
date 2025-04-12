@@ -55,7 +55,7 @@
         android:text="Your safe space for mental wellness and emotional support"
         android:textSize="15sp"
         android:textColor="#7D6EAD"
-        android:fontFamily="@font/lexend_light"
+        android:fontFamily="@font/lexend_regular"
         android:gravity="center"
         android:alpha="0.6"
         android:layout_marginHorizontal="32dp"
@@ -89,12 +89,18 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:contentDescription="Start a new chat"
-        app:fabCustomSize="80dp"
-        app:srcCompat="@drawable/ic_message"
-        app:maxImageSize="48dp"
+        app:fabCustomSize="60dp"
+        app:srcCompat="@drawable/ic_chat_bubble"
+        app:maxImageSize="30dp"
+        app:backgroundTint="#66975d"
+        app:tint="#FFFFFF"
+        app:elevation="6dp"
+        app:borderWidth="0dp"
+        app:rippleColor="#4CAF50"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
         app:layout_constraintTop_toTopOf="@id/StartChatGuide"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="32dp" />
+        android:layout_marginEnd="24dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/BookListRecyclerView"
@@ -201,60 +207,95 @@
         android:layout_marginBottom="16dp"
         tools:listitem="@layout/item_book" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Quote Container -->
+    <androidx.cardview.widget.CardView
         android:id="@+id/quoteContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="220dp"
+        android:layout_marginHorizontal="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toTopOf="@id/DailyQuoteGuide"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/DailyQuoteGuide">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/dailyQuoteText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/lexend_regular"
-            android:gravity="center"
-            android:lineSpacingExtra="4dp"
-            android:maxWidth="280dp"
-            android:padding="20dp"
-            android:text="Click to get inspiration!"
-            android:textAlignment="center"
-            android:textColor="#66975d"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/newQuoteFAB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="#66975d"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/saveQuoteFAB"
-            app:layout_constraintStart_toStartOf="parent"
-            app:maxImageSize="24dp"
-            app:srcCompat="@drawable/ic_refresh"
-            app:tint="@android:color/white" />
+            <TextView
+                android:id="@+id/quoteLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today's Inspiration"
+                android:textSize="14sp"
+                android:textColor="#66975d"
+                android:fontFamily="@font/lexend_regular"
+                android:layout_marginBottom="12dp"
+                android:alpha="0.8"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/saveQuoteFAB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:backgroundTint="#66975d"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/newQuoteFAB"
-            app:maxImageSize="24dp"
-            app:srcCompat="@drawable/ic_save"
-            app:tint="@android:color/white" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/dailyQuoteText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Click to get inspiration!"
+                android:textSize="18sp"
+                android:textColor="#2C3E50"
+                android:fontFamily="@font/lexend_regular"
+                android:gravity="start"
+                android:lineSpacingExtra="6dp"
+                android:maxLines="5"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/quoteAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#66975d"
+                android:fontFamily="@font/lexend_regular"
+                android:layout_gravity="end"
+                android:layout_marginTop="12dp"
+                android:alpha="0.9"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                android:layout_marginTop="12dp">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/newQuoteFAB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:backgroundTint="#A8D5A2"
+                    app:fabSize="mini"
+                    app:maxImageSize="16dp"
+                    app:srcCompat="@drawable/ic_refresh"
+                    app:tint="#FFFFFF"
+                    app:elevation="2dp"
+                    app:borderWidth="0dp"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/saveQuoteFAB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#A8D5A2"
+                    app:fabSize="mini"
+                    app:maxImageSize="16dp"
+                    app:srcCompat="@drawable/ic_save"
+                    app:tint="#FFFFFF"
+                    app:elevation="2dp"
+                    app:borderWidth="0dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/RecommendationTitleGuide"
@@ -268,7 +309,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_percent="0.20" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/welcomeTextGuide"
@@ -285,7 +326,7 @@
         android:textSize="14sp"
         android:textColor="#66975d"
         android:alpha="0.8"
-        android:fontFamily="@font/lexend_light"
+        android:fontFamily="@font/lexend_regular"
         android:letterSpacing="0.02"
         android:gravity="center"
         android:layout_marginBottom="16dp"

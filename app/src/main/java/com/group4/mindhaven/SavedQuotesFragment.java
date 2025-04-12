@@ -20,6 +20,15 @@ public class SavedQuotesFragment extends Fragment {
     private TextView emptyView;
     private ArrayList<String> savedQuotes;
     private QuotesAdapter adapter;
+    private SavedFragment parentFragment;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getParentFragment() instanceof SavedFragment) {
+            parentFragment = (SavedFragment) getParentFragment();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +50,7 @@ public class SavedQuotesFragment extends Fragment {
         savedQuotes = new ArrayList<>(quotesSet);
         
         updateQuotesView();
+        notifyParentCountChanged();
     }
 
     private void updateQuotesView() {
@@ -69,6 +79,13 @@ public class SavedQuotesFragment extends Fragment {
         
         // Update view
         updateQuotesView();
+        notifyParentCountChanged();
+    }
+
+    private void notifyParentCountChanged() {
+        if (parentFragment != null) {
+            parentFragment.updateSavedCount(1);
+        }
     }
 
     private class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.QuoteViewHolder> {
