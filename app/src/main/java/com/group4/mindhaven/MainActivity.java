@@ -29,15 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        // Check if user is signed in
+        // Check if user is signed in before calling super.onCreate
         mAuth = FirebaseAuth.getInstance();
         if (!isUserSignedIn()) {
             navigateToSignIn();
             return;
         }
         
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         setupBottomNavigation();

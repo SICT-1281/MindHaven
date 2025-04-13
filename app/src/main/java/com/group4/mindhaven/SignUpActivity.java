@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -80,32 +81,37 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        // Create user with email and password
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Create user profile in Firestore
-                        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("name", name);
-                        user.put("email", email);
+        // Check password format
+        if (!isPasswordValid(password)) {
+            Toast.makeText(this, "Password must be at least 6 characters long and contain at least one uppercase letter, one number, and one special character", Toast.LENGTH_LONG).show();
+            return;
+        }
 
-                        db.collection("users").document(userId)
-                                .set(user)
-                                .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(SignUpActivity.this, "Account created successfully", Toast.LENGTH_SHORT).show();
-                                    navigateToMainActivity();
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(SignUpActivity.this, "Error creating profile: " + e.getMessage(),
-                                            Toast.LENGTH_SHORT).show();
-                                });
-                    } else {
-                        // If sign up fails, display a message to the user.
-                        Toast.makeText(SignUpActivity.this, "Authentication failed: " + Objects.requireNonNull(task.getException()).getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+        // Navigate to email verification activity
+        Intent intent = new Intent(SignUpActivity.this, EmailVerificationActivity.class);
+        intent.putExtra("name", name);
+        intent.putExtra("email", email);
+        intent.putExtra("password", password);
+        startActivity(intent);
+        finish();
+    }
+
+    private boolean isPasswordValid(String password) {
+        // Password must be at least 6 characters long
+        if (password.length() < 6) {
+            return false;
+        }
+        
+        // Check for at least one uppercase letter
+        boolean hasUppercase = Pattern.compile("[A-Z]").matcher(password).find();
+        
+        // Check for at least one number
+        boolean hasNumber = Pattern.compile("[0-9]").matcher(password).find();
+        
+        // Check for at least one special character
+        boolean hasSpecialChar = Pattern.compile("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]").matcher(password).find();
+        
+        return hasUppercase && hasNumber && hasSpecialChar;
     }
 
     private void navigateToSignIn() {

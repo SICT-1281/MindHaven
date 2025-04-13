@@ -35,6 +35,13 @@
             android:label="Sign Up"
             android:theme="@style/Theme.MindHaven"/>
 
+        <!-- Email Verification Activity -->
+        <activity
+            android:name=".EmailVerificationActivity"
+            android:exported="false"
+            android:label="Email Verification"
+            android:theme="@style/Theme.MindHaven"/>
+
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
