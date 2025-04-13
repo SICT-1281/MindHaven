@@ -1,10 +1,9 @@
 package com.group4.mindhaven;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,39 +12,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView BookListView;  // Left side chat list
-    private BookListAdapter bookListAdapter;
-    private List<Book> BookList = BookDataProvider.getBooks();
-    private TextView dailyQuoteTextView;
-    private SharedPreferences sharedPreferences;
+    private final List<Book> BookList = BookDataProvider.getBooks();
+    private FirebaseAuth mAuth;
     private TextView dailyQuoteText;
     private TextView quoteAuthor;
-    private FloatingActionButton newQuoteFAB;
-    private FloatingActionButton saveQuoteFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         // Check if user is signed in
-        sharedPreferences = getSharedPreferences("MindHavenPrefs", MODE_PRIVATE);
+        mAuth = FirebaseAuth.getInstance();
         if (!isUserSignedIn()) {
             navigateToSignIn();
             return;
@@ -59,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isUserSignedIn() {
-        return sharedPreferences.getBoolean("isSignedIn", false);
+        return mAuth.getCurrentUser() != null;
     }
 
     private void navigateToSignIn() {
@@ -80,10 +67,12 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.navigation_chat) {
                 Intent intent = new Intent(MainActivity.this, ChatActivity.class);
                 startActivity(intent);
+                finish(); // Finish the current activity
                 return true;
             } else if (itemId == R.id.navigation_profile) {
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(intent);
+                finish(); // Finish the current activity
                 return true;
             }
             return false;
@@ -91,12 +80,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupBookList() {
-        BookListView = findViewById(R.id.BookListRecyclerView);
+        // Left side chat list
+        RecyclerView bookListView = findViewById(R.id.BookListRecyclerView);
 
         // Stack items horizontally from left to right
-        BookListView.setLayoutManager(new LinearLayoutManager(this,
+        bookListView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL, false));
-        bookListAdapter = new BookListAdapter(BookList,
+        BookListAdapter bookListAdapter = new BookListAdapter(BookList,
                 position -> {
                     Book selectedBook = BookList.get(position);
                     Intent intent = new Intent(MainActivity.this, BookDetailActivity.class);
@@ -106,9 +96,10 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("bookAuthor", selectedBook.getName());
                     startActivity(intent);
                 });
-        BookListView.setAdapter(bookListAdapter);
+        bookListView.setAdapter(bookListAdapter);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setupFloatingActionButtons() {
         FloatingActionButton startChatFAB = findViewById(R.id.StartChatFAB);
         startChatFAB.setContentDescription("Start a new chat");
@@ -167,10 +158,9 @@ public class MainActivity extends AppCompatActivity {
     private void setupDailyQuote() {
         dailyQuoteText = findViewById(R.id.dailyQuoteText);
         quoteAuthor = findViewById(R.id.quoteAuthor);
-        newQuoteFAB = findViewById(R.id.newQuoteFAB);
-        saveQuoteFAB = findViewById(R.id.saveQuoteFAB);
+        FloatingActionButton newQuoteFAB = findViewById(R.id.newQuoteFAB);
+        FloatingActionButton saveQuoteFAB = findViewById(R.id.saveQuoteFAB);
 
-        // 初始化时显示随机引用
         showRandomQuote();
 
         newQuoteFAB.setOnClickListener(v -> showRandomQuote());

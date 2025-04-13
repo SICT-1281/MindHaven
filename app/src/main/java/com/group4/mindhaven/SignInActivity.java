@@ -1,95 +1,79 @@
 package com.group4.mindhaven;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SignInActivity extends AppCompatActivity {
-
-    private TextInputEditText emailInput;
-    private TextInputEditText passwordInput;
-    private MaterialButton signInButton;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private Button signInButton;
     private TextView signUpPrompt;
-    private SharedPreferences sharedPreferences;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin_activity);
 
-        // Initialize SharedPreferences
-        sharedPreferences = getSharedPreferences("MindHavenPrefs", MODE_PRIVATE);
-
-        // Check if user is already signed in
-        if (isUserSignedIn()) {
-            navigateToMainActivity();
-            return;
-        }
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         // Initialize views
-        emailInput = findViewById(R.id.emailInput);
-        passwordInput = findViewById(R.id.passwordInput);
-        signInButton = findViewById(R.id.signinButton);
-        signUpPrompt = findViewById(R.id.signupPrompt);
+        emailEditText = findViewById(R.id.emailEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        signInButton = findViewById(R.id.signInButton);
+        signUpPrompt = findViewById(R.id.signUpPrompt);
 
-        // Set click listeners
-        signInButton.setOnClickListener(v -> handleSignIn());
-        signUpPrompt.setOnClickListener(v -> navigateToSignUp());
-    }
-
-    private boolean isUserSignedIn() {
-        return sharedPreferences.getBoolean("isSignedIn", false);
-    }
-
-    private void handleSignIn() {
-        String email = emailInput.getText().toString().trim();
-        String password = passwordInput.getText().toString().trim();
-
-        // Validate input
-        if (TextUtils.isEmpty(email)) {
-            emailInput.setError("Email is required");
+        // Check if user is already signed in
+        if (mAuth.getCurrentUser() != null) {
+            navigateToMain();
             return;
         }
 
-        if (TextUtils.isEmpty(password)) {
-            passwordInput.setError("Password is required");
-            return;
-        }
+        // Set up click listeners
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
 
-        // For demo purposes, we'll use a simple validation
-        // In a real app, you would validate against a backend server
-        if (email.equals("demo@example.com") && password.equals("password")) {
-            // Save sign-in state
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("isSignedIn", true);
-            editor.putString("userEmail", email);
-            editor.apply();
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(SignInActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-            // Navigate to main activity
-            navigateToMainActivity();
-        } else {
-            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-        }
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(SignInActivity.this, task -> {
+                            if (task.isSuccessful()) {
+                                navigateToMain();
+                            } else {
+                                Toast.makeText(SignInActivity.this, "Authentication failed: " + task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+
+        signUpPrompt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
+                finish();
+            }
+        });
     }
 
-    private void navigateToSignUp() {
-        Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
-        startActivity(intent);
-    }
-
-    private void navigateToMainActivity() {
-        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+    private void navigateToMain() {
+        startActivity(new Intent(SignInActivity.this, MainActivity.class));
         finish();
     }
 } 

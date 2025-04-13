@@ -12,34 +12,39 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import android.util.Log;
 
 public class ProfileActivity extends AppCompatActivity {
     private TextView userNameText;
     private TextView userEmailText;
-    private MaterialButton signOutButton;
-    private MaterialButton savedItemsButton;
-    private MaterialButton editButton;
     private SharedPreferences sharedPreferences;
     private TextView chatCountText;
     private TextView quotesCountText;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        // Initialize Firebase Auth and Firestore
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        
         // Check if user is signed in
-        sharedPreferences = getSharedPreferences("MindHavenPrefs", MODE_PRIVATE);
-        if (!sharedPreferences.getBoolean("isSignedIn", false)) {
+        if (!isUserSignedIn()) {
             Intent intent = new Intent(ProfileActivity.this, SignInActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -52,9 +57,9 @@ public class ProfileActivity extends AppCompatActivity {
         // Initialize views
         userNameText = findViewById(R.id.userNameText);
         userEmailText = findViewById(R.id.userEmailText);
-        signOutButton = findViewById(R.id.signOutButton);
-        savedItemsButton = findViewById(R.id.savedItemsButton);
-        editButton = findViewById(R.id.editButton);
+        MaterialButton signOutButton = findViewById(R.id.signOutButton);
+        MaterialButton savedItemsButton = findViewById(R.id.savedItemsButton);
+        MaterialButton editButton = findViewById(R.id.editButton);
         chatCountText = findViewById(R.id.chatCountText);
         quotesCountText = findViewById(R.id.quotesCountText);
 
@@ -79,6 +84,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Set up bottom navigation
         setupBottomNavigation();
+    }
+
+    private boolean isUserSignedIn() {
+        return mAuth.getCurrentUser() != null;
     }
 
     private void showEditDialog() {
@@ -133,8 +142,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Set the buttons
         builder.setPositiveButton("Save", (dialog, which) -> {
-            String newName = nameInput.getText().toString().trim();
-            String newEmail = emailInput.getText().toString().trim();
+            String newName = Objects.requireNonNull(nameInput.getText()).toString().trim();
+            String newEmail = Objects.requireNonNull(emailInput.getText()).toString().trim();
 
             if (newName.isEmpty()) {
                 nameLayout.setError("Name is required");
@@ -151,33 +160,75 @@ public class ProfileActivity extends AppCompatActivity {
                 return;
             }
 
-            // Save to SharedPreferences
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("userName", newName);
-            editor.putString("userEmail", newEmail);
-            editor.apply();
-
-            // Update UI
-            userNameText.setText(newName);
-            userEmailText.setText(newEmail);
-
-            Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+            // Get current user ID
+            String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+            Log.d("ProfileActivity", "User ID: " + userId);
+            
+            // Update user data in Firestore
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("name", newName);
+            updates.put("email", newEmail);
+            Log.d("ProfileActivity", "Updating Firestore with: " + updates);
+            
+            db.collection("users").document(userId)
+                    .update(updates)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("ProfileActivity", "Firestore update successful");
+                        // Update UI immediately with the new values
+                        userNameText.setText(newName);
+                        userEmailText.setText(newEmail);
+                        
+                        Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("ProfileActivity", "Firestore update failed", e);
+                        Toast.makeText(this, "Error updating profile: " + e.getMessage(), 
+                                Toast.LENGTH_SHORT).show();
+                    });
         });
 
         builder.setNegativeButton("Cancel", null);
 
         // Create and show the dialog
         AlertDialog dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.dialog_background);
         dialog.show();
     }
 
     private void loadUserData() {
-        String name = sharedPreferences.getString("userName", "User");
-        String email = sharedPreferences.getString("userEmail", "");
-
-        userNameText.setText(name);
-        userEmailText.setText(email);
+        // Get current user
+        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        Log.d("ProfileActivity", "Loading user data for ID: " + userId);
+        
+        // Get user data from Firestore
+        db.collection("users").document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String name = documentSnapshot.getString("name");
+                        String email = documentSnapshot.getString("email");
+                        Log.d("ProfileActivity", "Retrieved from Firestore - Name: " + name + ", Email: " + email);
+                        
+                        userNameText.setText(name);
+                        userEmailText.setText(email);
+                    } else {
+                        Log.d("ProfileActivity", "No user document found in Firestore");
+                        // Create a new user document if it doesn't exist
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("name", userNameText.getText().toString());
+                        userData.put("email", userEmailText.getText().toString());
+                        
+                        db.collection("users").document(userId)
+                                .set(userData)
+                                .addOnSuccessListener(aVoid -> Log.d("ProfileActivity", "Created new user document"))
+                                .addOnFailureListener(e -> Log.e("ProfileActivity", "Error creating user document", e));
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ProfileActivity", "Error loading user data", e);
+                    Toast.makeText(this, "Error loading user data: " + e.getMessage(), 
+                            Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void setupBottomNavigation() {
@@ -187,23 +238,20 @@ public class ProfileActivity extends AppCompatActivity {
             if (itemId == R.id.navigation_home) {
                 Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
                 return true;
-            } else if (itemId == R.id.navigation_chat) {
+            } else // Already on profile page
+                if (itemId == R.id.navigation_chat) {
                 Intent intent = new Intent(ProfileActivity.this, ChatActivity.class);
                 startActivity(intent);
+                finish();
                 return true;
-            } else if (itemId == R.id.navigation_profile) {
-                // Already on profile page
-                return true;
-            }
-            return false;
+            } else return itemId == R.id.navigation_profile;
         });
     }
 
     private void signOut() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isSignedIn", false);
-        editor.apply();
+        mAuth.signOut();
         
         Intent intent = new Intent(ProfileActivity.this, SignInActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

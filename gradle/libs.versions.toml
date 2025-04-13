@@ -1,5 +1,6 @@
 [versions]
 agp = "8.8.0"
+firebaseBom = "33.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -9,8 +10,11 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 navigationFragment = "2.6.0"
 navigationUi = "2.6.0"
+firebaseAuth = "23.2.0"
 
 [libraries]
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 gson = { group = "com.google.code.gson", name = "gson", version = "2.10.1" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -22,6 +26,7 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 okhttp = "com.squareup.okhttp3:okhttp:4.9.3"
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

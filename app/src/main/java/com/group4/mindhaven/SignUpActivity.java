@@ -1,7 +1,6 @@
 package com.group4.mindhaven;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.TextView;
@@ -11,6 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -18,25 +23,25 @@ public class SignUpActivity extends AppCompatActivity {
     private TextInputEditText emailInput;
     private TextInputEditText passwordInput;
     private TextInputEditText confirmPasswordInput;
-    private MaterialButton signUpButton;
-    private TextView signInPrompt;
-    private SharedPreferences sharedPreferences;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_activity);
 
-        // Initialize SharedPreferences
-        sharedPreferences = getSharedPreferences("MindHavenPrefs", MODE_PRIVATE);
+        // Initialize Firebase Auth and Firestore
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // Initialize views
         nameInput = findViewById(R.id.nameInput);
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
-        signUpButton = findViewById(R.id.signupButton);
-        signInPrompt = findViewById(R.id.signinPrompt);
+        MaterialButton signUpButton = findViewById(R.id.signupButton);
+        TextView signInPrompt = findViewById(R.id.signinPrompt);
 
         // Set click listeners
         signUpButton.setOnClickListener(v -> handleSignUp());
@@ -44,10 +49,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void handleSignUp() {
-        String name = nameInput.getText().toString().trim();
-        String email = emailInput.getText().toString().trim();
-        String password = passwordInput.getText().toString().trim();
-        String confirmPassword = confirmPasswordInput.getText().toString().trim();
+        String name = Objects.requireNonNull(nameInput.getText()).toString().trim();
+        String email = Objects.requireNonNull(emailInput.getText()).toString().trim();
+        String password = Objects.requireNonNull(passwordInput.getText()).toString().trim();
+        String confirmPassword = Objects.requireNonNull(confirmPasswordInput.getText()).toString().trim();
 
         // Validate input
         if (TextUtils.isEmpty(name)) {
@@ -75,23 +80,32 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        // For demo purposes, we'll just save the user info
-        // In a real app, you would register the user with a backend server
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isSignedIn", true);
-        editor.putString("userName", name);
-        editor.putString("userEmail", email);
-        
-        // Set default values for bio and phone number
-        editor.putString("userBio", "Hi~ Introduce Yourself Please~");
-        editor.putString("userPhone", "000-000-0000");
-        
-        editor.apply();
+        // Create user with email and password
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Create user profile in Firestore
+                        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("name", name);
+                        user.put("email", email);
 
-        Toast.makeText(this, "Account created successfully", Toast.LENGTH_SHORT).show();
-
-        // Navigate to main activity
-        navigateToMainActivity();
+                        db.collection("users").document(userId)
+                                .set(user)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(SignUpActivity.this, "Account created successfully", Toast.LENGTH_SHORT).show();
+                                    navigateToMainActivity();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(SignUpActivity.this, "Error creating profile: " + e.getMessage(),
+                                            Toast.LENGTH_SHORT).show();
+                                });
+                    } else {
+                        // If sign up fails, display a message to the user.
+                        Toast.makeText(SignUpActivity.this, "Authentication failed: " + Objects.requireNonNull(task.getException()).getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void navigateToSignIn() {

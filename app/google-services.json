@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "795880409853",
-    "project_id": "mindhaven-60165",
-    "storage_bucket": "mindhaven-60165.firebasestorage.app"
+    "project_number": "148984482442",
+    "project_id": "mindhaven-35d71",
+    "storage_bucket": "mindhaven-35d71.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:795880409853:android:3898f0dfd8bb7af30b4c94",
+        "mobilesdk_app_id": "1:148984482442:android:d9c67148589d7c07debb73",
         "android_client_info": {
           "package_name": "com.group4.mindhaven"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAV4rmE8LHAMLBcF0q4zcGzgBhnUlf6Z08"
+          "current_key": "AIzaSyBiL3MXe5YjCYt0B2umyCZnBre0Pe3jzCI"
         }
       ],
       "services": {

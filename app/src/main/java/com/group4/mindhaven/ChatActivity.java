@@ -1,7 +1,7 @@
 package com.group4.mindhaven;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -24,11 +25,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -40,15 +39,20 @@ public class ChatActivity extends AppCompatActivity {
     private String chatID;
     private List<Message> messageList;
     private ChatAdapter chatAdapter;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("MindHavenPrefs", MODE_PRIVATE);
-        if (!sharedPreferences.getBoolean("isSignedIn", false)) {
-            startActivity(new Intent(ChatActivity.this, SignInActivity.class)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        
+        // Check if user is signed in
+        if (!isUserSignedIn()) {
+            Intent intent = new Intent(ChatActivity.this, SignInActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             finish();
             return;
         }
@@ -104,16 +108,29 @@ public class ChatActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_CHAT_HISTORY);
         });
 
+        setupBottomNavigation();
+    }
+
+    private boolean isUserSignedIn() {
+        return mAuth.getCurrentUser() != null;
+    }
+
+    private void setupBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
-                startActivity(new Intent(this, MainActivity.class));
+                Intent intent = new Intent(ChatActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Finish the current activity
                 return true;
             } else if (itemId == R.id.navigation_chat) {
-                return true; // Already in chat, do nothing
+                // Already on chat page
+                return true;
             } else if (itemId == R.id.navigation_profile) {
-                startActivity(new Intent(this, ProfileActivity.class));
+                Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                finish(); // Finish the current activity
                 return true;
             }
             return false;
@@ -196,7 +213,7 @@ public class ChatActivity extends AppCompatActivity {
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 connection.setDoOutput(true);
-                connection.getOutputStream().write(requestBody.getBytes("UTF-8"));
+                connection.getOutputStream().write(requestBody.getBytes(StandardCharsets.UTF_8));
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuilder responseBuilder = new StringBuilder();
@@ -222,6 +239,7 @@ public class ChatActivity extends AppCompatActivity {
         }).start();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void updateChatWindow() {
         ChatSession session = manager.getChatSession(chatID);
         messageList = session.getMessages();
@@ -238,7 +256,7 @@ public class ChatActivity extends AppCompatActivity {
             JsonArray candidates = root.getAsJsonArray("candidates");
 
             // If candidates is not null and not empty
-            if (candidates != null && candidates.size() > 0) {
+            if (candidates != null && !candidates.isEmpty()) {
                 // Access the "content" object inside the first candidate
                 JsonObject content = candidates.get(0).getAsJsonObject()
                         .getAsJsonObject("content");
@@ -246,7 +264,7 @@ public class ChatActivity extends AppCompatActivity {
                 JsonArray parts = content.getAsJsonArray("parts");
 
                 // If "parts" is not null and not empty
-                if (parts != null && parts.size() > 0) {
+                if (parts != null && !parts.isEmpty()) {
                     // Return the actual reply text from the first "parts" object
                     return parts.get(0).getAsJsonObject().get("text").getAsString();
                 }
