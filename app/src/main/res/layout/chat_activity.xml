@@ -154,9 +154,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        app:fabSize="mini"
         android:contentDescription="Add Chat"
         app:srcCompat="@drawable/ic_add"
-        app:backgroundTint="#4CAF50"
+        android:backgroundTint="#A8D5A2"
+        app:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@id/AddChatGuide"
         app:layout_constraintStart_toStartOf="parent"
         />

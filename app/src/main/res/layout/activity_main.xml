@@ -151,8 +151,8 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_book_shelf"
-            android:tint="#66975d"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            app:tint="#66975d" />
 
         <TextView
             android:layout_width="wrap_content"

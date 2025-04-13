@@ -31,9 +31,15 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:contentDescription="Start a new chat"
-        app:fabCustomSize="65dp"
-        app:srcCompat="@drawable/ic_message"
-        app:maxImageSize="32dp"
+        app:fabCustomSize="60dp"
+        app:srcCompat="@drawable/ic_chat_bubble"
+        app:maxImageSize="30dp"
+        app:backgroundTint="#66975d"
+        app:tint="#FFFFFF"
+        app:elevation="6dp"
+        app:borderWidth="0dp"
+        app:rippleColor="#4CAF50"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
         app:layout_constraintTop_toTopOf="@id/StartChatGuide"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="38dp" />
@@ -109,13 +115,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/lightbulb"
-        app:maxImageSize="38dp"
-        app:tint="@android:color/white"
-        android:backgroundTint="#A29BFE"
+        android:backgroundTint="#A8D5A2"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_refresh"
+        app:maxImageSize="16dp"
+        app:tint="#FFFFFF"
         app:layout_constraintTop_toTopOf="@id/newQuoteHorizontalGuide"
         app:layout_constraintEnd_toEndOf="@id/newQuoteVerticalGuid"
-        />
+        app:borderWidth="0dp"/>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/saveQuoteFAB"
@@ -125,7 +133,7 @@
         app:srcCompat="@drawable/ic_save"
         app:maxImageSize="24dp"
         app:tint="@android:color/white"
-        android:backgroundTint="#66975d"
+        android:backgroundTint="#A8D5A2"
         app:layout_constraintTop_toTopOf="@id/SaveQuoteHorizontalGuide"
         app:layout_constraintStart_toStartOf="@id/SaveQuoteVerticalGuide"
         />
