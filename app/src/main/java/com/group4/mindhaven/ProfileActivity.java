@@ -2,9 +2,11 @@ package com.group4.mindhaven;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -279,5 +281,29 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateStatsCounts();
+    }
+
+    public void openResourceLink(View view) {
+        String url = "";
+        // Get the index of the clicked LinearLayout in its parent container
+        int index = ((ViewGroup) view.getParent()).indexOfChild(view);
+        
+        // Determine the URL based on the index
+        if (index == 0) {
+            url = "https://www.befrienders.org";
+        } else if (index == 1) {
+            url = "https://www.mhanational.org";
+        } else if (index == 2) {
+            url = "https://www.mind.org.uk";
+        } else if (index == 3) {
+            url = "https://www.imhrc.org";
+        } else if (index == 4) {
+            url = "https://www.unicef.org/mental-health";
+        }
+
+        if (!url.isEmpty()) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+        }
     }
 } 

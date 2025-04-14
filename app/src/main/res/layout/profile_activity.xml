@@ -127,14 +127,234 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Resources Section -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/resourceLinksCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="1dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/statsSection">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Resources"
+                android:textColor="#66975d"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:onClick="openResourceLink">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_globe"
+                        android:tint="#66975d"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Befrienders Worldwide"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:layout_marginStart="12dp"/>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_right"
+                        android:tint="#999999"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/divider_horizontal"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:onClick="openResourceLink">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_brain"
+                        android:tint="#66975d"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mental Health America"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:layout_marginStart="12dp"/>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_right"
+                        android:tint="#999999"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/divider_horizontal"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:onClick="openResourceLink">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_heart"
+                        android:tint="#66975d"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mind UK"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:layout_marginStart="12dp"/>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_right"
+                        android:tint="#999999"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/divider_horizontal"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:onClick="openResourceLink">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_globe"
+                        android:tint="#66975d"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="IMHRC"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:layout_marginStart="12dp"/>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_right"
+                        android:tint="#999999"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/divider_horizontal"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:onClick="openResourceLink">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_people"
+                        android:tint="#66975d"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="UNICEF Mental Health"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:layout_marginStart="12dp"/>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_right"
+                        android:tint="#999999"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
     <!-- Action Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="24dp"
-        app:layout_constraintTop_toBottomOf="@id/statsSection"
-        android:layout_marginTop="8dp">
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        android:layout_marginBottom="16dp">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/savedItemsButton"
@@ -157,65 +377,6 @@
             android:layout_marginTop="8dp"
             app:strokeColor="#66975d"
             app:cornerRadius="12dp"/>
-
-        <TextView
-            android:id="@+id/resourceTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sometimes, we all need a little extra help — explore these resources: "
-            android:textColor="#2C3E50"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:id="@+id/resource1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🌍 Befrienders: www.befrienders.org"
-            android:textColor="#66975d"
-            android:textSize="16sp"
-            android:autoLink="web" />
-
-        <TextView
-            android:id="@+id/resource2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🧠 MHA: www.mhanational.org"
-            android:textColor="#66975d"
-            android:textSize="16sp"
-            android:autoLink="web" />
-
-        <TextView
-            android:id="@+id/resource3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🇬🇧 Mind: www.mind.org.uk"
-            android:textColor="#66975d"
-            android:textSize="16sp"
-            android:autoLink="web" />
-
-        <TextView
-            android:id="@+id/resource4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🌐 IMHRC: www.imhrc.org"
-            android:textColor="#66975d"
-            android:textSize="16sp"
-            android:autoLink="web" />
-
-        <TextView
-            android:id="@+id/resource5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="👥 UNICEF: www.unicef.org/mental-health"
-            android:textColor="#66975d"
-            android:textSize="16sp"
-            android:autoLink="web" />
-
-
-
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

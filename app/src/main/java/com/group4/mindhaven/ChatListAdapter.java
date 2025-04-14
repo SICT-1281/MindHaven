@@ -3,12 +3,13 @@ package com.group4.mindhaven;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -36,8 +37,9 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate a chat_list_item layout
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_list_item, parent, false);
+        // Inflate a chat_history_item layout
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.chat_history_item, parent, false);
 
         // Create and return a new ViewHolder containing this view
         return new ChatViewHolder(view);
@@ -50,7 +52,16 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
         ChatSession session = chatSessions.get(position);
 
         // Set the title of the chat session to the TextView
-        holder.textView.setText(session.getTitle());
+        holder.chatTitle.setText(session.getTitle());
+
+        // Get the last message if available
+        List<Message> messages = session.getMessages();
+        if (!messages.isEmpty()) {
+            Message lastMessage = messages.get(messages.size() - 1);
+            holder.lastMessage.setText(lastMessage.getContent());
+        } else {
+            holder.lastMessage.setText("No messages yet");
+        }
 
         // Set a click listener on the entire item view
         holder.itemView.setOnClickListener(v -> {
@@ -74,13 +85,15 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatVi
 
     // ViewHolder class holds the views for each list item (improves performance)
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;  // TextView to display the chat title\
-        Button deleteButton;
+        TextView chatTitle;  // TextView to display the chat title
+        TextView lastMessage;
+        MaterialButton deleteButton;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
             // Find the TextView inside the inflated layout
-            textView = itemView.findViewById(R.id.chatTitle);
+            chatTitle = itemView.findViewById(R.id.chatTitle);
+            lastMessage = itemView.findViewById(R.id.lastMessage);
             deleteButton = itemView.findViewById(R.id.deleteButton);
         }
     }

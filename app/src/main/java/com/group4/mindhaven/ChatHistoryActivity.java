@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
 
 public class ChatHistoryActivity extends AppCompatActivity {
@@ -24,6 +26,10 @@ public class ChatHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_history);
 
         currentChatId = getIntent().getStringExtra("currentChatId");
+
+        // Setup back button
+        MaterialButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
 
         recyclerView = findViewById(R.id.chatHistoryRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

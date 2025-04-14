@@ -1,4 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#33D1C4E9"/> <!-- 透明感蓝紫色 -->
-    <corners android:radius="16dp" />
+    <solid android:color="#33D1C4E9"/> <!-- Translucent blue-purple -->
+    <corners android:radius="16dp"/>
 </shape>

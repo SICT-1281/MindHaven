@@ -63,18 +63,27 @@
         app:layout_constraintBottom_toBottomOf="@id/InputBox"/>
 
 
-    <Button
-        android:id="@+id/chatHistoryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#66BB6A"
-        android:text="Chat History"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/TitleText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/menuButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:padding="8dp"
+        app:icon="@drawable/ic_more_vert"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="#66975d"
+        android:backgroundTint="#E8F5E9"
+        app:rippleColor="#66975d"
+        android:stateListAnimator="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/TitleText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/TitleText"
+        android:layout_marginStart="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ChatView"
@@ -148,27 +157,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/TitleText"
         />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addChatButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:fabSize="mini"
-        android:contentDescription="Add Chat"
-        app:srcCompat="@drawable/ic_add"
-        android:backgroundTint="#A8D5A2"
-        app:tint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@id/AddChatGuide"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/AddChatGuide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25" />
 
     <Button
         android:id="@+id/KeywordButton1"

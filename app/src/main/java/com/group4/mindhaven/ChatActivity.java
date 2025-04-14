@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -28,6 +29,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.widget.PopupMenu;
+import android.view.MenuItem;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -98,14 +102,27 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton addChatButton = findViewById(R.id.addChatButton);
-        addChatButton.setOnClickListener(v -> showNewChatDialog());
-
-        Button chatHistoryButton = findViewById(R.id.chatHistoryButton);
-        chatHistoryButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ChatActivity.this, ChatHistoryActivity.class);
-            intent.putExtra("currentChatId", chatID);
-            startActivityForResult(intent, REQUEST_CHAT_HISTORY);
+        // Remove the addChatButton since we're using a menu now
+        MaterialButton menuButton = findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(ChatActivity.this, menuButton);
+            popup.getMenuInflater().inflate(R.menu.chat_menu, popup.getMenu());
+            
+            popup.setOnMenuItemClickListener(item -> {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_new_chat) {
+                    showNewChatDialog();
+                    return true;
+                } else if (itemId == R.id.action_chat_history) {
+                    Intent intent = new Intent(ChatActivity.this, ChatHistoryActivity.class);
+                    intent.putExtra("currentChatId", chatID);
+                    startActivityForResult(intent, REQUEST_CHAT_HISTORY);
+                    return true;
+                }
+                return false;
+            });
+            
+            popup.show();
         });
 
         setupBottomNavigation();
