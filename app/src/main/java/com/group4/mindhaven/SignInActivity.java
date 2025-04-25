@@ -54,6 +54,10 @@ public class SignInActivity extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignInActivity.this, task -> {
                             if (task.isSuccessful()) {
+                                getSharedPreferences("MindHavenPrefs", MODE_PRIVATE)
+                                        .edit()
+                                        .putBoolean("isSignedIn", true)
+                                        .apply();
                                 navigateToMain();
                             } else {
                                 Toast.makeText(SignInActivity.this, "Authentication failed: " + task.getException().getMessage(),

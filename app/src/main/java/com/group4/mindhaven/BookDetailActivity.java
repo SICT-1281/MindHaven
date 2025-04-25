@@ -66,6 +66,9 @@ public class BookDetailActivity extends AppCompatActivity {
         TextView summaryText = findViewById(R.id.bookSummaryText);
         MaterialButton readMoreButton = findViewById(R.id.openLinkButton);
         saveButton = findViewById(R.id.saveButton);
+        if (saveButton == null) {
+            return;
+        }
 
         // Set book data
         if (imageResId != 0) {

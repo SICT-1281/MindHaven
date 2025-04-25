@@ -30,29 +30,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/chatHistoryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="#66BB6A"
-        android:text="Chat History"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.606"
-        app:layout_constraintStart_toEndOf="@+id/TitleText"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/menuButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:padding="8dp"
+        app:icon="@drawable/ic_more_vert"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="#66975d"
+        android:backgroundTint="#E8F5E9"
+        app:rippleColor="#66975d"
+        android:stateListAnimator="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/TitleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TitleText"
+        android:layout_marginStart="16dp" />
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ChatView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/chatHistoryButton"
-        app:layout_constraintBottom_toTopOf="@id/KeywordButton1"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/KeywordButton1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TitleText"
+        />
 
     <!-- Input Field -->
     <EditText
@@ -87,24 +98,6 @@
         app:layout_constraintTop_toTopOf="@id/InputBox"
         app:layout_constraintBottom_toBottomOf="@id/InputBox"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Add Chat FAB -->
-
-    <!-- Bottom Navigation -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addChatButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginStart="88dp"
-        app:fabSize="mini"
-        android:contentDescription="Add Chat"
-        android:backgroundTint="#A8D5A2"
-        app:tint="#FFFFFF"
-        app:layout_constraintStart_toStartOf="@id/AddChatVerticalGuide"
-        app:layout_constraintTop_toTopOf="@id/AddChatHorizontalGuide"
-        app:srcCompat="@drawable/ic_add"
-        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -189,6 +182,36 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.01" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatListRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/TitleText"
+        />
+
+    <TextView
+        android:id="@+id/SloganText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share Your Worries, Ease Your Mind"
+        android:textSize="15sp"
+        android:textColor="#66975d"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:lineSpacingExtra="6dp"
+        android:letterSpacing="0.03"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/TitleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
